@@ -30,7 +30,7 @@ func handleConnection(conn net.Conn) {
 	b := make([]byte, 0)
 	rr, ee := conn.Read(b)
 	fmt.Println(rr, ee, b)
-	m, mm := conn.Write([]byte("+pong\r\n"))
+	m, mm := conn.Write([]byte("+PONG\r\n"))
 	fmt.Println(m, mm, b)
 
 	return
