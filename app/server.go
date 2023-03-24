@@ -27,11 +27,16 @@ func main() {
 }
 
 func handleConnection(conn net.Conn) {
-	b := make([]byte, 0)
-	rr, ee := conn.Read(b)
-	fmt.Println(rr, ee, b)
-	m, mm := conn.Write([]byte("+PONG\r\n"))
-	fmt.Println(m, mm, b)
+	for conn != nil {
+		buf := make([]byte, 1024)
+		len, err := conn.Read(buf)
+		if err != nil {
+			fmt.Printf("Error reading: %#v\n", err)
+			return
+		}
+		fmt.Printf("Message received: %s\n", string(buf[:len]))
 
-	return
+		conn.Write([]byte("+PONG\r\n"))
+	}
+
 }
