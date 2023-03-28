@@ -65,10 +65,7 @@ func marshal(d interface{}) []byte {
 
 func commander(v string, in interface{}) interface{} {
 	if strings.ToLower(v) == "ping" {
-		ret := "pong"
-		if v[0] == 'P'{
-			ret = strings.ToUpper(ret)
-		}
+		ret := strings.ToUpper("pong")
 		return ret
 	} else if strings.ToLower(v) == "echo" {
 		return in.([]string)[0]
