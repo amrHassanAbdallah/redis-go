@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var data = make(map[string]interface{}, 0)
+
 func unmarshal(data []byte) interface{} {
 	dataItems := strings.Split(string(data), "\r\n")
 	fmt.Println(dataItems)
@@ -57,6 +59,8 @@ func marshal(d interface{}) []byte {
 		fmt.Println("int:", v)
 	case string:
 		return []byte("+" + wordWriter(d.(string)))
+	case nil:
+		return []byte("$-1\r\n")
 	default:
 		fmt.Println("unknown")
 	}
@@ -69,6 +73,16 @@ func commander(v string, in interface{}) interface{} {
 		return ret
 	} else if strings.ToLower(v) == "echo" {
 		return in.([]string)[0]
+	} else if strings.ToLower(v) == "set" {
+		newIn := in.([]string)
+		data[newIn[0]] = newIn[1]
+		return "OK"
+	} else if strings.ToLower(v) == "get" {
+		newIn := in.([]string)
+		if val, k := data[newIn[0]]; k {
+			return val
+		}
+		return nil
 	}
 	return "unsupported"
 }
